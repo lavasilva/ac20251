@@ -4,7 +4,16 @@ import br.edu.cs.poo.ac.seguro.daos.SeguradoPessoaDAO;
 import br.edu.cs.poo.ac.seguro.entidades.SeguradoPessoa;
 
 public class SeguradoPessoaMediator {
-    private SeguradoMediator seguradoMediator = new SeguradoMediator();
+    private static SeguradoPessoaMediator instancia = new SeguradoPessoaMediator(); // instância única
+    private SeguradoMediator seguradoMediator = SeguradoMediator.obterInstancia();
+    private SeguradoPessoaDAO seguradoPessoaDAO = new SeguradoPessoaDAO();
+
+    private SeguradoPessoaMediator() {
+    }
+
+    public static SeguradoPessoaMediator obterInstancia() {
+        return instancia;
+    }
 
     public String validarCpf(String cpf) {
         if (StringUtils.ehNuloOuBranco(cpf)) {
@@ -24,22 +33,22 @@ public class SeguradoPessoaMediator {
         String msg = validarSeguradoPessoa(seg);
         if (msg != null) return msg;
 
-        return new SeguradoPessoaDAO().incluir(seg);
+        return seguradoPessoaDAO.incluir(seg);
     }
 
     public String alterarSeguradoPessoa(SeguradoPessoa seg) {
         String msg = validarSeguradoPessoa(seg);
         if (msg != null) return msg;
 
-        return new SeguradoPessoaDAO().alterar(seg);
+        return seguradoPessoaDAO.alterar(seg);
     }
 
     public String excluirSeguradoPessoa(String cpf) {
-        return new SeguradoPessoaDAO().excluir(cpf);
+        return seguradoPessoaDAO.excluir(cpf);
     }
 
     public SeguradoPessoa buscarSeguradoPessoa(String cpf) {
-        return new SeguradoPessoaDAO().buscar(cpf);
+        return seguradoPessoaDAO.buscar(cpf);
     }
 
     public String validarSeguradoPessoa(SeguradoPessoa seg) {
