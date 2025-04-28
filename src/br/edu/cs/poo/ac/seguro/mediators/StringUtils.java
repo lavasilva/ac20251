@@ -1,4 +1,4 @@
-package br.edu.cs.poo.ac.seguro.mediators;
+package br.edu.cs.poo.ac.seguro.br.edu.cs.poo.ac.seguro.mediators;
 
 public class StringUtils {
 

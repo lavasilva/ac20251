@@ -1,4 +1,4 @@
-package br.edu.cs.poo.ac.seguro.testes;
+package br.edu.cs.poo.ac.seguro.br.edu.cs.poo.ac.seguro.testes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import br.edu.cs.poo.ac.seguro.entidades.Endereco;
 import br.edu.cs.poo.ac.seguro.entidades.SeguradoPessoa;
-import br.edu.cs.poo.ac.seguro.mediators.SeguradoPessoaMediator;
+import br.edu.cs.poo.ac.seguro.br.edu.cs.poo.ac.seguro.mediators.SeguradoPessoaMediator;
 
 public class TesteSeguradoPessoaMediator extends TesteMediator {
 	private SeguradoPessoaMediator med = SeguradoPessoaMediator.getInstancia();

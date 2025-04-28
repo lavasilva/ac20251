@@ -1,4 +1,4 @@
-package br.edu.cs.poo.ac.seguro.testes;
+package br.edu.cs.poo.ac.seguro.br.edu.cs.poo.ac.seguro.testes;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
 import br.edu.cs.poo.ac.seguro.entidades.Endereco;
-import br.edu.cs.poo.ac.seguro.mediators.SeguradoMediator;
+import br.edu.cs.poo.ac.seguro.br.edu.cs.poo.ac.seguro.mediators.SeguradoMediator;
 
 public class TesteSeguradoMediator {
 	private SeguradoMediator med = SeguradoMediator.getInstancia();

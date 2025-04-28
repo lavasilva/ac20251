@@ -1,4 +1,4 @@
-package br.edu.cs.poo.ac.seguro.mediators;
+package br.edu.cs.poo.ac.seguro.br.edu.cs.poo.ac.seguro.mediators;
 
 import br.edu.cs.poo.ac.seguro.daos.SeguradoEmpresaDAO;
 import br.edu.cs.poo.ac.seguro.entidades.SeguradoEmpresa;
