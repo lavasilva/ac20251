@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 @Setter
 @AllArgsConstructor
 public class Apolice {
+	private String numero;
 	private Veiculo veiculo;
 	private BigDecimal valorFranquia;
 	private BigDecimal valorPremio;
