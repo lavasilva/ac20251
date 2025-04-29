@@ -1,4 +1,4 @@
-package br.edu.cs.poo.ac.seguro.br.edu.cs.poo.ac.seguro.mediators;
+package br.edu.cs.poo.ac.seguro.mediators;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

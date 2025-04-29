@@ -1,4 +1,4 @@
-package br.edu.cs.poo.ac.seguro.br.edu.cs.poo.ac.seguro.testes;
+package br.edu.cs.poo.ac.seguro.testes;
 
 import static org.junit.jupiter.api.Assertions.*;
 
