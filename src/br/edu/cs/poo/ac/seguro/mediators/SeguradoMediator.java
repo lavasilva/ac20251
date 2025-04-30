@@ -5,28 +5,52 @@ import java.time.LocalDate;
 import br.edu.cs.poo.ac.seguro.entidades.Endereco;
 
 public class SeguradoMediator {
-	private static SeguradoMediator instancia = new SeguradoMediator(); // instância única
 
-	private SeguradoMediator() {
-	}
+    private static SeguradoMediator instancia = new SeguradoMediator();
 
-	public static SeguradoMediator obterInstancia() {
-		return instancia;
-	}
+    private SeguradoMediator() {}
 
-	public String validarNome(String nome) {
-		return null;
-	}
+    public static SeguradoMediator obterInstancia() {
+        return instancia;
+    }
 
-	public String validarEndereco(Endereco endereco) {
-		return null;
-	}
+    public String validarNome(String nome) {
+        if (StringUtils.ehNuloOuBranco(nome)) {
+            return "Nome não informado";
+        }
+        return null;
+    }
 
-	public String validarDataCriacao(LocalDate dataCriacao) {
-		return null;
-	}
+    public String validarEndereco(Endereco endereco) {
+        if (endereco == null) {
+            return "Endereço não informado";
+        }
+        if (StringUtils.ehNuloOuBranco(endereco.getLogradouro()) ||
+                StringUtils.ehNuloOuBranco(endereco.getNumero()) ||
+                StringUtils.ehNuloOuBranco(endereco.getCidade()) ||
+                StringUtils.ehNuloOuBranco(endereco.getCep())) {
+            return "Endereço incompleto";
+        }
+        return null;
+    }
 
-	public BigDecimal ajustarDebitoBonus(BigDecimal bonus, BigDecimal valorDebito) {
-		return null;
-	}
+    public String validarDataCriacao(LocalDate dataCriacao) {
+        if (dataCriacao == null) {
+            return "Data de criação não informada";
+        }
+        if (dataCriacao.isAfter(LocalDate.now())) {
+            return "Data de criação no futuro";
+        }
+        return null;
+    }
+
+    public BigDecimal ajustarDebitoBonus(BigDecimal bonus, BigDecimal valorDebito) {
+        if (bonus == null || valorDebito == null) {
+            return BigDecimal.ZERO;
+        }
+        if (valorDebito.compareTo(bonus) > 0) {
+            return BigDecimal.ZERO;
+        }
+        return bonus.subtract(valorDebito);
+    }
 }

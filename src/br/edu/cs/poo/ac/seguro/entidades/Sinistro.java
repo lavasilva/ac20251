@@ -9,11 +9,11 @@ import lombok.AllArgsConstructor;
 @Setter
 @AllArgsConstructor
 public class Sinistro {
-	private String numero;
-	private Veiculo veiculo;
-	private LocalDateTime dataHoraSinistro;
-	private LocalDateTime dataHoraRegistro;
-	private String usuarioRegistro;
-	private BigDecimal valorSinistro;
-	private TipoSinistro tipo;
+    private String numero;
+    private Veiculo veiculo;
+    private LocalDateTime dataHoraSinistro;
+    private LocalDateTime dataHoraRegistro;
+    private String usuarioRegistro;
+    private BigDecimal valorSinistro;
+    private TipoSinistro tipo;
 }

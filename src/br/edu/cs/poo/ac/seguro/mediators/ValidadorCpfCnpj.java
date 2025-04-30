@@ -2,52 +2,53 @@ package br.edu.cs.poo.ac.seguro.mediators;
 
 public class ValidadorCpfCnpj {
 
-    public static boolean ehCnpjValido(String cnpj) {
-        if (StringUtils.ehNuloOuBranco(cnpj) || !StringUtils.temSomenteNumeros(cnpj)) {
-            return false;
+    public static boolean ehCpfValido(String cpf) {
+        if (cpf == null || !cpf.matches("\\d{11}")) return false;
+
+        // Elimina CPFs com todos os dígitos iguais
+        if (cpf.matches("(\\d)\\1{10}")) return false;
+
+        int soma = 0, peso = 10;
+        for (int i = 0; i < 9; i++) {
+            soma += (cpf.charAt(i) - '0') * peso--;
         }
+        int dig1 = 11 - (soma % 11);
+        dig1 = dig1 > 9 ? 0 : dig1;
 
-        if (cnpj.length() != 14) return false;
-
-        if (cnpj.chars().distinct().count() == 1) return false;
-
-        int[] pesos1 = {5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
-        int[] pesos2 = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
-
-        int soma1 = 0, soma2 = 0;
-        for (int i = 0; i < 12; i++) {
-            int digito = Character.getNumericValue(cnpj.charAt(i));
-            soma1 += digito * pesos1[i];
-            soma2 += digito * pesos2[i];
+        soma = 0;
+        peso = 11;
+        for (int i = 0; i < 10; i++) {
+            soma += (cpf.charAt(i) - '0') * peso--;
         }
+        int dig2 = 11 - (soma % 11);
+        dig2 = dig2 > 9 ? 0 : dig2;
 
-        int digito1 = soma1 % 11 < 2 ? 0 : 11 - (soma1 % 11);
-        soma2 += digito1 * pesos2[12];
-        int digito2 = soma2 % 11 < 2 ? 0 : 11 - (soma2 % 11);
-
-        return cnpj.endsWith("" + digito1 + digito2);
+        return cpf.charAt(9) - '0' == dig1 && cpf.charAt(10) - '0' == dig2;
     }
 
-    public static boolean ehCpfValido(String cpf) {
-        if (StringUtils.ehNuloOuBranco(cpf) || !StringUtils.temSomenteNumeros(cpf)) {
-            return false;
+    public static boolean ehCnpjValido(String cnpj) {
+        if (cnpj == null || !cnpj.matches("\\d{14}")) return false;
+
+        // Elimina CNPJs com todos os dígitos iguais
+        if (cnpj.matches("(\\d)\\1{13}")) return false;
+
+        int[] peso1 = {5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+        int[] peso2 = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+
+        int soma = 0;
+        for (int i = 0; i < 12; i++) {
+            soma += (cnpj.charAt(i) - '0') * peso1[i];
         }
+        int dig1 = soma % 11;
+        dig1 = dig1 < 2 ? 0 : 11 - dig1;
 
-        if (cpf.length() != 11) return false;
-
-        if (cpf.chars().distinct().count() == 1) return false;
-
-        int soma1 = 0, soma2 = 0;
-        for (int i = 0; i < 9; i++) {
-            int digito = Character.getNumericValue(cpf.charAt(i));
-            soma1 += digito * (10 - i);
-            soma2 += digito * (11 - i);
+        soma = 0;
+        for (int i = 0; i < 13; i++) {
+            soma += (cnpj.charAt(i) - '0') * peso2[i];
         }
+        int dig2 = soma % 11;
+        dig2 = dig2 < 2 ? 0 : 11 - dig2;
 
-        int digito1 = soma1 % 11 < 2 ? 0 : 11 - (soma1 % 11);
-        soma2 += digito1 * 2;
-        int digito2 = soma2 % 11 < 2 ? 0 : 11 - (soma2 % 11);
-
-        return cpf.endsWith("" + digito1 + digito2);
+        return cnpj.charAt(12) - '0' == dig1 && cnpj.charAt(13) - '0' == dig2;
     }
 }
