@@ -1,17 +1,24 @@
 package br.edu.cs.poo.ac.seguro.entidades;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
-public class SeguradoPessoa extends Segurado {
+public class SeguradoPessoa extends Segurado implements Serializable {
+
     private String cpf;
     private double renda;
 
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public SeguradoPessoa(String nome, Endereco endereco, LocalDate dataNascimento,
+                          BigDecimal bonus, String cpf, double renda)
+    {
+        super(Objects.requireNonNull(nome),
+                Objects.requireNonNull(endereco),
+                Objects.requireNonNull(dataNascimento),
+                Objects.requireNonNull(bonus));
+        this.cpf = Objects.requireNonNull(cpf);
+        this.renda = renda;
     }
 
     public double getRenda() {
@@ -22,20 +29,21 @@ public class SeguradoPessoa extends Segurado {
         this.renda = renda;
     }
 
-
-    public SeguradoPessoa(String nome, Endereco endereco, LocalDate dataNascimento, BigDecimal bonus, String cpf, double renda) {
-        super(nome, endereco, dataNascimento, bonus);
-        this.cpf = cpf;
-        this.renda = renda;
-
-    }
-
     public LocalDate getDataNascimento() {
-        return getDataCriacao();
+        return super.getDataCriacao();
     }
 
-    public void setDataNascimento(LocalDate dataAbertura) {
-        setDataCriacao(dataAbertura);
+    public void setDataNascimento(LocalDate dataNascimento) {
+        super.setDataCriacao(dataNascimento);
     }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
 
 }

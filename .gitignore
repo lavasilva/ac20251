@@ -1,3 +1,10 @@
+### Dados persistidos nos testes ###
+/SeguradoEmpresa/
+/Apolice/
+/Sinsitro/
+/SeguradoPessoa/
+/Veiculo/
+
 ### IntelliJ IDEA ###
 out/
 !**/src/main/**/out/

@@ -4,72 +4,84 @@ import br.edu.cs.poo.ac.seguro.daos.SeguradoPessoaDAO;
 import br.edu.cs.poo.ac.seguro.entidades.SeguradoPessoa;
 
 public class SeguradoPessoaMediator {
-    private SeguradoMediator seguradoMediator = SeguradoMediator.obterInstancia();
-    private SeguradoPessoaDAO dao = new SeguradoPessoaDAO();
 
-    private static SeguradoPessoaMediator instancia = new SeguradoPessoaMediator();
-    public static SeguradoPessoaMediator obterInstancia() {
-        return instancia;
+    public SeguradoMediator seguradoMediator = SeguradoMediator.getInstancia();
+    public static final SeguradoPessoaMediator med = new SeguradoPessoaMediator();
+    private SeguradoPessoaDAO dao;
+
+    private SeguradoPessoaMediator() {
+        dao = new SeguradoPessoaDAO();
+    }
+
+    public static SeguradoPessoaMediator getInstancia() {
+        return med;
     }
 
     public String validarCpf(String cpf) {
-        if (StringUtils.ehNuloOuBranco(cpf)) {
-            return "CPF nulo ou em branco";
-        }
-        if (!ValidadorCpfCnpj.ehCpfValido(cpf)) {
-            return "CPF inválido";
-        }
+        if (StringUtils.ehNuloOuBranco(cpf))
+            return "CPF deve ser informado";
+        if (cpf.length() != 11)
+            return "CPF deve ter 11 caracteres";
+        if (!ValidadorCpfCnpj.ehCpfValido(cpf))
+            return "CPF com dígito inválido";
+
         return null;
     }
 
     public String validarRenda(double renda) {
-        if (renda < 0) {
-            return "Renda não pode ser negativa";
-        }
-        return null;
-    }
-
-    public String validarSeguradoPessoa(SeguradoPessoa seg) {
-        String msg = validarCpf(seg.getCpf());
-        if (msg != null) return msg;
-
-        msg = validarRenda(seg.getRenda());
-        if (msg != null) return msg;
-
-        msg = seguradoMediator.validarNome(seg.getNome());
-        if (msg != null) return msg;
-
-        msg = seguradoMediator.validarEndereco(seg.getEndereco());
-        if (msg != null) return msg;
-
-        msg = seguradoMediator.validarDataCriacao(seg.getDataCriacao());
-        if (msg != null) return msg;
-
+        if (renda < 0)
+            return "Renda deve ser maior ou igual à zero";
         return null;
     }
 
     public String incluirSeguradoPessoa(SeguradoPessoa seg) {
-        String msg = validarSeguradoPessoa(seg);
-        if (msg != null) return msg;
+        String erro = validarSeguradoPessoa(seg);
+        if (erro != null) return erro;
 
         boolean sucesso = dao.incluir(seg);
-        return sucesso ? null : "Já existe um segurado com este CPF";
+        if (!sucesso) {
+            return "CPF do segurado pessoa já existente";
+        }
+        return null;
     }
 
     public String alterarSeguradoPessoa(SeguradoPessoa seg) {
-        String msg = validarSeguradoPessoa(seg);
-        if (msg != null) return msg;
+        String erro = validarSeguradoPessoa(seg);
+        if (erro != null) return erro;
 
         boolean sucesso = dao.alterar(seg);
-        return sucesso ? null : "Segurado com este CPF não encontrado";
+        if (!sucesso) {
+            return "CPF do segurado pessoa não existente";
+        }
+        return null;
     }
 
     public String excluirSeguradoPessoa(String cpf) {
         boolean sucesso = dao.excluir(cpf);
-        return sucesso ? null : "Segurado com este CPF não encontrado";
+        if (!sucesso) {
+            return "CPF do segurado pessoa não existente";
+        }
+        return null;
     }
 
     public SeguradoPessoa buscarSeguradoPessoa(String cpf) {
         return dao.buscar(cpf);
+    }
+
+    public String validarSeguradoPessoa(SeguradoPessoa seg) {
+        if (seg == null) return "Segurado não pode ser nulo";
+        if (StringUtils.ehNuloOuBranco(seg.getNome()))
+            return "Nome deve ser informado";
+        if (seg.getEndereco() == null)
+            return "Endereço deve ser informado";
+        if (seg.getDataNascimento() == null)
+            return "Data do nascimento deve ser informada";
+        String erroCpf = validarCpf(seg.getCpf());
+        if (erroCpf != null)
+            return erroCpf;
+        String erroRenda = validarRenda(seg.getRenda());
+        if (erroRenda != null)
+            return erroRenda;
+        return null;
     }
 }

@@ -3,22 +3,21 @@ package br.edu.cs.poo.ac.seguro.daos;
 import br.edu.cesarschool.next.oo.persistenciaobjetos.CadastroObjetos;
 import br.edu.cs.poo.ac.seguro.entidades.Apolice;
 
-import java.io.Serializable;
-
 public class ApoliceDAO extends DAOGenerico {
+
     public ApoliceDAO() {
         cadastro = new CadastroObjetos(Apolice.class);
     }
 
     public Apolice buscar(String numero) {
-        return (Apolice) cadastro.buscar(numero);
+        return (Apolice)cadastro.buscar(numero);
     }
 
     public boolean incluir(Apolice apolice) {
         if (buscar(apolice.getNumero()) != null) {
             return false;
         } else {
-            cadastro.incluir((Serializable) apolice, apolice.getNumero());
+            cadastro.incluir(apolice, apolice.getNumero());
             return true;
         }
     }
@@ -27,7 +26,7 @@ public class ApoliceDAO extends DAOGenerico {
         if (buscar(apolice.getNumero()) == null) {
             return false;
         } else {
-            cadastro.alterar((Serializable) apolice, apolice.getNumero());
+            cadastro.alterar(apolice, apolice.getNumero());
             return true;
         }
     }
@@ -40,4 +39,5 @@ public class ApoliceDAO extends DAOGenerico {
             return true;
         }
     }
+
 }

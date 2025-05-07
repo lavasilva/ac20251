@@ -4,47 +4,36 @@ import br.edu.cs.poo.ac.seguro.daos.SeguradoEmpresaDAO;
 import br.edu.cs.poo.ac.seguro.entidades.SeguradoEmpresa;
 
 public class SeguradoEmpresaMediator {
-    private SeguradoMediator seguradoMediator = SeguradoMediator.obterInstancia();
-    private SeguradoEmpresaDAO dao = new SeguradoEmpresaDAO();
 
-    private static SeguradoEmpresaMediator instancia = new SeguradoEmpresaMediator();
-    public static SeguradoEmpresaMediator obterInstancia() {
-        return instancia;
+    private SeguradoEmpresaDAO dao;
+    private SeguradoMediator seguradoMediator = SeguradoMediator.getInstancia();
+    public static final SeguradoEmpresaMediator med = new SeguradoEmpresaMediator();
+
+    private SeguradoEmpresaMediator() {
+        dao = new SeguradoEmpresaDAO();
+    }
+
+    public static SeguradoEmpresaMediator getInstancia() {
+        return med;
     }
 
     public String validarCnpj(String cnpj) {
         if (StringUtils.ehNuloOuBranco(cnpj)) {
-            return "CNPJ nulo ou em branco";
+            return "CNPJ deve ser informado";
         }
-        if (!ValidadorCpfCnpj.ehCnpjValido(cnpj)) {
-            return "CNPJ inválido";
+        if (cnpj.length() != 14) {
+            return "CNPJ deve ter 14 caracteres";
+        }
+        if (!StringUtils.temSomenteNumeros(cnpj) || !ValidadorCpfCnpj.ehCnpjValido(cnpj)) {
+            return "CNPJ com dígito inválido";
         }
         return null;
     }
 
     public String validarFaturamento(double faturamento) {
-        if (faturamento < 0) {
-            return "Faturamento não pode ser negativo";
+        if (faturamento <= 0) {
+            return "Faturamento deve ser maior que zero";
         }
-        return null;
-    }
-
-    public String validarSeguradoEmpresa(SeguradoEmpresa seg) {
-        String msg = validarCnpj(seg.getCnpj());
-        if (msg != null) return msg;
-
-        msg = validarFaturamento(seg.getFaturamento());
-        if (msg != null) return msg;
-
-        msg = seguradoMediator.validarNome(seg.getNome());
-        if (msg != null) return msg;
-
-        msg = seguradoMediator.validarEndereco(seg.getEndereco());
-        if (msg != null) return msg;
-
-        msg = seguradoMediator.validarDataCriacao(seg.getDataCriacao());
-        if (msg != null) return msg;
-
         return null;
     }
 
@@ -52,24 +41,56 @@ public class SeguradoEmpresaMediator {
         String msg = validarSeguradoEmpresa(seg);
         if (msg != null) return msg;
 
-        boolean sucesso = dao.incluir(seg);
-        return sucesso ? null : "Já existe um segurado com este CNPJ";
+        if (dao.buscar(seg.getCnpj()) != null) {
+            return "CNPJ do segurado empresa já existente";
+        }
+
+        dao.incluir(seg);
+        return null;
     }
 
     public String alterarSeguradoEmpresa(SeguradoEmpresa seg) {
         String msg = validarSeguradoEmpresa(seg);
         if (msg != null) return msg;
 
-        boolean sucesso = dao.alterar(seg);
-        return sucesso ? null : "Segurado com este CNPJ não encontrado";
+        if (dao.buscar(seg.getCnpj()) == null) {
+            return "CNPJ do segurado empresa não existente";
+        }
+
+        dao.alterar(seg);
+        return null;
     }
 
     public String excluirSeguradoEmpresa(String cnpj) {
-        boolean sucesso = dao.excluir(cnpj);
-        return sucesso ? null : "Segurado com este CNPJ não encontrado";
+        if (dao.buscar(cnpj) == null) {
+            return "CNPJ do segurado empresa não existente";
+        }
+        dao.excluir(cnpj);
+        return null;
     }
 
     public SeguradoEmpresa buscarSeguradoEmpresa(String cnpj) {
         return dao.buscar(cnpj);
+    }
+
+    public String validarSeguradoEmpresa(SeguradoEmpresa seg) {
+        if (seg == null) {
+            return "Segurado inválido";
+        }
+        if (StringUtils.ehNuloOuBranco(seg.getNome())) {
+            return "Nome deve ser informado";
+        }
+        if (seg.getEndereco() == null) {
+            return "Endereço deve ser informado";
+        }
+        if (seg.getDataAbertura() == null) {
+            return "Data da abertura deve ser informada";
+        }
+
+        String msg = validarCnpj(seg.getCnpj());
+        if (msg != null) {
+            return msg;
+        }
+        return validarFaturamento(seg.getFaturamento());
     }
 }
