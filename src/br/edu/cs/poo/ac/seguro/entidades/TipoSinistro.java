@@ -24,7 +24,7 @@ public enum TipoSinistro {
         return nome;
     }
 
-    public static TipoSinistro getTipoSinistro(int codigo) {
+    public static TipoSinistro getTipoPorCodigo(int codigo) {
         for (TipoSinistro tipoSinistro : TipoSinistro.values()) {
             if (tipoSinistro.codigo == codigo) {
                 return tipoSinistro;
