@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class SeguradoPessoa extends Segurado implements Serializable {
+public class SeguradoPessoa extends Segurado implements Serializable, Registro {
 
     private String cpf;
     private double renda;
@@ -44,10 +44,15 @@ public class SeguradoPessoa extends Segurado implements Serializable {
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-    
+
     @Override
     public boolean isEmpresa() {
         return false;
+    }
+
+    @Override
+    public String getIdUnico() {
+        return cpf;
     }
 
 }

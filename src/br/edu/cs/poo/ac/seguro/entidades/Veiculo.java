@@ -11,10 +11,15 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Veiculo implements Serializable {
+public class Veiculo implements Serializable, Registro {
 
     private String placa;
     private int ano;
     private Segurado proprietario; 
     private CategoriaVeiculo categoria;
+
+    @Override
+    public String getIdUnico() {
+        return placa;
+    }
 }

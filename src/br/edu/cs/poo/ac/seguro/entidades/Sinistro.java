@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 @Setter
 @AllArgsConstructor
 
-public class Sinistro implements Serializable {
+public class Sinistro implements Serializable, Registro {
     private String numero;
     private Veiculo veiculo;
     private LocalDateTime dataHoraSinistro;
@@ -20,4 +20,9 @@ public class Sinistro implements Serializable {
     private String usuarioRegistro;
     private BigDecimal valorSinistro;
     private TipoSinistro tipo;
+
+    @Override
+    public String getIdUnico() {
+        return numero;
+    }
 }
