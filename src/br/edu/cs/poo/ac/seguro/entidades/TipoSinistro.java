@@ -32,4 +32,9 @@ public enum TipoSinistro {
         }
         return null;
     }
+
+	public static TipoSinistro getTipoSinistro(int codigoTipoSinistro) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

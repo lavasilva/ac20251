@@ -24,4 +24,5 @@ public class Apolice implements Serializable, Registro {
     public String getIdUnico() {
         return numero;
     }
+
 }

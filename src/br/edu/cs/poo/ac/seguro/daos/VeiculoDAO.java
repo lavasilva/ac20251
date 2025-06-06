@@ -9,5 +9,9 @@ public class VeiculoDAO extends DAOGenerico<Veiculo> {
         return Veiculo.class;
     }
 
+	public boolean existePlaca(String placa) {
+		return false;
+	}
+
  
 }

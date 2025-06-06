@@ -1,29 +1,25 @@
 package br.edu.cs.poo.ac.seguro.daos;
 
-import br.edu.cesarschool.next.oo.persistenciaobjetos.CadastroObjetos;
 import br.edu.cs.poo.ac.seguro.entidades.Registro;
+import br.edu.cesarschool.next.oo.persistenciaobjetos.CadastroObjetos;
+
+import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class DAOGenerico<T extends Registro> {
 
-    protected CadastroObjetos cadastro;
+    private CadastroObjetos cadastro;
 
     public DAOGenerico() {
-        cadastro = new CadastroObjetos(getClasseEntidade());
+        this.cadastro = new CadastroObjetos(getClasseEntidade());
     }
 
-    public abstract Class<T> getClasseEntidade();
+    protected abstract Class<T> getClasseEntidade();
 
-    public T buscar(String idUnico) {
-        return (T) cadastro.buscar(idUnico);
-    }
-
-    public List<T> buscarTodos() {
-        Serializable[] objs = cadastro.buscarTodos();
-        List<T> lista = new ArrayList<>();
-        for (Serializable obj : objs) {
-            lista.add((T) obj);
-        }
-        return lista;
+    public T buscar(String id) {
+        return (T) cadastro.buscar(id);
     }
 
     public boolean incluir(T entidade) {
@@ -42,11 +38,25 @@ public abstract class DAOGenerico<T extends Registro> {
         return true;
     }
 
-    public boolean excluir(String idUnico) {
-        if (buscar(idUnico) == null) {
+    public boolean excluir(String id) {
+        if (buscar(id) == null) {
             return false;
         }
-        cadastro.excluir(idUnico);
+        cadastro.excluir(id);
         return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    public T[] buscarTodos() {
+        Serializable[] objetos = cadastro.buscarTodos();
+        List<T> lista = new ArrayList<>();
+
+        for (Serializable obj : objetos) {
+            lista.add((T) obj); // cast seguro item a item
+        }
+
+        // Cria um array do tipo T do tamanho da lista
+        T[] array = (T[]) Array.newInstance(getClasseEntidade(), lista.size());
+        return lista.toArray(array);
     }
 }
